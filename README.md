@@ -35,18 +35,7 @@ Password-Generator/
 
 Generate strong passwords instantly with a clean and modern interface.
 
-## ▶️ Getting Started
 
-1. Clone the repository:
-
-```bash
-git clone https://github.com/your-username/password-generator.git
-```
-
-2. Navigate to the project folder:
-
-```bash
-cd password-generator
 ```
 
 3. Open `index.html` in your browser.
