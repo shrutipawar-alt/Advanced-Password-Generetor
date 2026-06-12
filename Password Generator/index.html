@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Password Generator</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    padding:20px;
+}
+
+.container{
+    width:400px;
+    padding:30px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,0.2);
+    box-shadow:0 8px 32px rgba(0,0,0,0.3);
+    color:white;
+}
+
+h2{
+    text-align:center;
+    margin-bottom:20px;
+    font-size:28px;
+}
+
+label{
+    font-weight:500;
+}
+
+input[type="number"]{
+    width:100%;
+    padding:12px;
+    margin-top:8px;
+    border:none;
+    border-radius:12px;
+    outline:none;
+    background:rgba(255,255,255,0.15);
+    color:white;
+    font-size:16px;
+}
+
+.options{
+    margin-top:15px;
+}
+
+.options label{
+    display:block;
+    margin:10px 0;
+    cursor:pointer;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    margin-top:15px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    background:linear-gradient(45deg,#00c6ff,#0072ff);
+    color:white;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+.password-box{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+.password-box input{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    outline:none;
+    background:rgba(255,255,255,0.15);
+    color:white;
+    font-size:15px;
+}
+
+.password-box button{
+    width:90px;
+    margin-top:0;
+}
+
+#strength{
+    text-align:center;
+    margin-top:15px;
+    font-weight:bold;
+    font-size:18px;
+}
+
+.footer{
+    text-align:center;
+    margin-top:15px;
+    font-size:12px;
+    opacity:0.8;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>🔐 Password Generator</h2>
+
+    <label>Password Length</label>
+    <input type="number" id="length" min="4" max="50" value="12">
+
+    <div class="options">
+        <label><input type="checkbox" id="uppercase" checked> Uppercase Letters</label>
+        <label><input type="checkbox" id="lowercase" checked> Lowercase Letters</label>
+        <label><input type="checkbox" id="numbers" checked> Numbers</label>
+        <label><input type="checkbox" id="symbols" checked> Symbols</label>
+    </div>
+
+    <button onclick="generatePassword()">
+        Generate Password
+    </button>
+
+    <div class="password-box">
+        <input type="text" id="password" readonly placeholder="Your password">
+        <button onclick="copyPassword()">Copy</button>
+    </div>
+
+    <div id="strength"></div>
+
+    <div class="footer">
+        Secure Random Password Generator
+    </div>
+
+</div>
+
+<script>
+
+function generatePassword(){
+
+    const length = document.getElementById("length").value;
+
+    let chars = "";
+
+    if(document.getElementById("uppercase").checked){
+        chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    }
+
+    if(document.getElementById("lowercase").checked){
+        chars += "abcdefghijklmnopqrstuvwxyz";
+    }
+
+    if(document.getElementById("numbers").checked){
+        chars += "0123456789";
+    }
+
+    if(document.getElementById("symbols").checked){
+        chars += "!@#$%^&*()_+-={}[]<>?/|";
+    }
+
+    if(chars === ""){
+        alert("Please select at least one option!");
+        return;
+    }
+
+    let password = "";
+
+    for(let i=0;i<length;i++){
+        password += chars.charAt(
+            Math.floor(Math.random() * chars.length)
+        );
+    }
+
+    document.getElementById("password").value = password;
+
+    checkStrength(password);
+}
+
+function copyPassword(){
+
+    const password = document.getElementById("password");
+
+    if(password.value === ""){
+        alert("Generate password first!");
+        return;
+    }
+
+    navigator.clipboard.writeText(password.value);
+
+    alert("✅ Password Copied!");
+}
+
+function checkStrength(password){
+
+    let strength = document.getElementById("strength");
+
+    if(password.length < 8){
+        strength.innerHTML = "🔴 Weak Password";
+        strength.style.color = "#ff6b6b";
+    }
+    else if(password.length < 12){
+        strength.innerHTML = "🟡 Medium Password";
+        strength.style.color = "#ffd43b";
+    }
+    else{
+        strength.innerHTML = "🟢 Strong Password";
+        strength.style.color = "#69db7c";
+    }
+}
+
+generatePassword();
+
+</script>
+
+</body>
+</html>
